@@ -1,0 +1,83 @@
+[gd_scene load_steps=3 format=3 uid="uid://dcassp55eyfnf"]
+
+[ext_resource type="Script" path="res://Scripts/Evidence.gd" id="1_ktlnd"]
+[ext_resource type="Texture2D" uid="uid://bbwvojbasjqol" path="res://assets/camera-add-photo-svgrepo-com.svg" id="2_oscek"]
+
+[node name="Evidence" type="VBoxContainer"]
+offset_right = 400.0
+offset_bottom = 554.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource("1_ktlnd")
+label_text = "Data"
+label_data_sector = "Sector"
+
+[node name="Label_Sector" type="Label" parent="."]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0.670588, 0, 1)
+theme_override_font_sizes/font_size = 80
+text = "Sector"
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="VBoxContainer_Photo" type="VBoxContainer" parent="."]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="TextureRect_photo" type="TextureRect" parent="VBoxContainer_Photo" groups=["evidence_photos"]]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(400, 400)
+layout_mode = 2
+size_flags_horizontal = 4
+texture = ExtResource("2_oscek")
+expand_mode = 1
+metadata/original = true
+
+[node name="Button_data" type="Button" parent="VBoxContainer_Photo"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_font_sizes/font_size = 40
+text = "Tomar Evidencia"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 3
+theme_override_constants/separation = 10
+
+[node name="Label_dataType" type="Label" parent="HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 0
+theme_override_font_sizes/font_size = 60
+text = "Data"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 25
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/HBoxContainer"]
+layout_mode = 2
+
+[node name="LineEdit_S1_P1" type="LineEdit" parent="HBoxContainer/HBoxContainer/VBoxContainer" groups=["evidence_data"]]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 40
+virtual_keyboard_type = 2
+clear_button_enabled = true
+
+[node name="Button_decimal" type="Button" parent="HBoxContainer/HBoxContainer/VBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(75, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 50
+toggle_mode = true
+text = ","
+
+[connection signal="pressed" from="VBoxContainer_Photo/Button_data" to="." method="_on_button_data_pressed"]
+[connection signal="pressed" from="HBoxContainer/HBoxContainer/VBoxContainer/Button_decimal" to="." method="_on_button_pressed"]

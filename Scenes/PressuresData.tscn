@@ -1,0 +1,128 @@
+[gd_scene load_steps=4 format=3 uid="uid://x7fab5fld08t"]
+
+[ext_resource type="Script" path="res://Scripts/AreaData.gd" id="1_ppeuy"]
+[ext_resource type="Script" path="res://Scripts/ControlData.gd" id="2_bdjhb"]
+[ext_resource type="PackedScene" uid="uid://dcassp55eyfnf" path="res://Scenes/Evidence.tscn" id="3_ri718"]
+
+[node name="PresionData" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+script = ExtResource("1_ppeuy")
+photo_directory = "pressures"
+metadata/_edit_horizontal_guides_ = [256.0]
+
+[node name="ControlPresionData" type="ScrollContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("2_bdjhb")
+
+[node name="HBoxContainer" type="VBoxContainer" parent="ControlPresionData"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 8
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="ControlPresionData/HBoxContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer2" type="VBoxContainer" parent="ControlPresionData/HBoxContainer/HBoxContainer2"]
+layout_mode = 2
+theme_override_constants/separation = 40
+
+[node name="Button_back" type="Button" parent="ControlPresionData/HBoxContainer/HBoxContainer2/HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 3
+theme_override_font_sizes/font_size = 50
+text = "Regresar"
+
+[node name="HBoxContainer" type="VBoxContainer" parent="ControlPresionData/HBoxContainer/HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 10
+theme_override_constants/separation = 40
+
+[node name="HBoxContainer" type="HBoxContainer" parent="ControlPresionData/HBoxContainer/HBoxContainer2/HBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="ControlPresionData/HBoxContainer/HBoxContainer2/HBoxContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 50
+text = "Usuario: "
+
+[node name="Label_username" type="Label" parent="ControlPresionData/HBoxContainer/HBoxContainer2/HBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 50
+text = "user"
+
+[node name="Button_logout" type="Button" parent="ControlPresionData/HBoxContainer/HBoxContainer2/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 50
+text = "Cerrar Sesión"
+
+[node name="VBoxContainer_Vibrations" type="VBoxContainer" parent="ControlPresionData/HBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_constants/separation = 50
+alignment = 1
+
+[node name="Label" type="Label" parent="ControlPresionData/HBoxContainer/VBoxContainer_Vibrations"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0.670588, 0, 1)
+theme_override_font_sizes/font_size = 100
+text = "Presiones"
+horizontal_alignment = 1
+
+[node name="VBoxContainer_sectors" type="VBoxContainer" parent="ControlPresionData/HBoxContainer/VBoxContainer_Vibrations"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 100
+
+[node name="Label" type="Label" parent="ControlPresionData/HBoxContainer/VBoxContainer_Vibrations/VBoxContainer_sectors"]
+layout_mode = 2
+
+[node name="TubAVM" parent="ControlPresionData/HBoxContainer/VBoxContainer_Vibrations/VBoxContainer_sectors" instance=ExtResource("3_ri718")]
+layout_mode = 2
+label_text = "vares"
+label_data_sector = "Tuberia presion antes de valvula mariposa"
+
+[node name="TubDVM" parent="ControlPresionData/HBoxContainer/VBoxContainer_Vibrations/VBoxContainer_sectors" instance=ExtResource("3_ri718")]
+layout_mode = 2
+label_text = "vares"
+label_data_sector = "Tuberia de presion despues  de valvula mariposa"
+
+[node name="CodDesc" parent="ControlPresionData/HBoxContainer/VBoxContainer_Vibrations/VBoxContainer_sectors" instance=ExtResource("3_ri718")]
+layout_mode = 2
+label_text = "vares"
+label_data_sector = "Codo de descarga"
+
+[node name="TubAlivPres" parent="ControlPresionData/HBoxContainer/VBoxContainer_Vibrations/VBoxContainer_sectors" instance=ExtResource("3_ri718")]
+layout_mode = 2
+label_text = "vares"
+label_data_sector = "Tuberia de alivio de presión"
+
+[node name="VBoxContainer_uploadButtons" type="VBoxContainer" parent="ControlPresionData/HBoxContainer/VBoxContainer_Vibrations"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 8
+
+[node name="Button_UploadData" type="Button" parent="ControlPresionData/HBoxContainer/VBoxContainer_Vibrations/VBoxContainer_uploadButtons"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 80
+text = "Subir datos"
+
+[connection signal="pressed" from="ControlPresionData/HBoxContainer/HBoxContainer2/HBoxContainer2/Button_back" to="." method="_on_button_back_pressed"]
+[connection signal="pressed" from="ControlPresionData/HBoxContainer/HBoxContainer2/HBoxContainer/Button_logout" to="." method="_on_button_pressed"]
+[connection signal="pressed" from="ControlPresionData/HBoxContainer/VBoxContainer_Vibrations/VBoxContainer_uploadButtons/Button_UploadData" to="." method="_on_button_upload_data_pressed"]

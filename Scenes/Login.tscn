@@ -1,0 +1,98 @@
+[gd_scene load_steps=4 format=3 uid="uid://d1og15fnnvaqf"]
+
+[ext_resource type="Script" path="res://Scripts/Login.gd" id="1_gu5er"]
+[ext_resource type="Texture2D" uid="uid://dk5fbx3qj6mjq" path="res://Assets/check (Custom).png" id="2_aor7u"]
+[ext_resource type="Texture2D" uid="uid://c1ootftcsg6vw" path="res://Assets/square (Custom).png" id="2_yraox"]
+
+[node name="Login" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_gu5er")
+
+[node name="ScrollContainer" type="ScrollContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 6
+size_flags_vertical = 3
+theme_override_constants/separation = 400
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="ScrollContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 4
+
+[node name="Label" type="Label" parent="ScrollContainer/VBoxContainer/VBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 150
+text = "CBS ENERGY"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ScrollContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 8
+theme_override_constants/separation = 50
+
+[node name="Label2" type="Label" parent="ScrollContainer/VBoxContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 120
+text = "Inicio de sesión"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ScrollContainer/VBoxContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 50
+
+[node name="Label" type="Label" parent="ScrollContainer/VBoxContainer/VBoxContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 100
+text = "Usuario:"
+
+[node name="LineEdit_username" type="LineEdit" parent="ScrollContainer/VBoxContainer/VBoxContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 100
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="ScrollContainer/VBoxContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 50
+
+[node name="Label" type="Label" parent="ScrollContainer/VBoxContainer/VBoxContainer/VBoxContainer2"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 100
+text = "Contraseña:"
+
+[node name="LineEdit_password" type="LineEdit" parent="ScrollContainer/VBoxContainer/VBoxContainer/VBoxContainer2"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 100
+secret = true
+secret_character = "*"
+
+[node name="VBoxContainer3" type="VBoxContainer" parent="ScrollContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Button_login" type="Button" parent="ScrollContainer/VBoxContainer/VBoxContainer3"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 100
+text = "Ingresar"
+
+[node name="CheckBox_remember_session" type="CheckBox" parent="ScrollContainer/VBoxContainer/VBoxContainer3"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 100
+theme_override_icons/checked = ExtResource("2_aor7u")
+theme_override_icons/unchecked = ExtResource("2_yraox")
+text = "Recordar sesión"
+
+[connection signal="pressed" from="ScrollContainer/VBoxContainer/VBoxContainer3/Button_login" to="." method="_on_button_login_pressed"]
+[connection signal="pressed" from="ScrollContainer/VBoxContainer/VBoxContainer3/CheckBox_remember_session" to="." method="_on_check_box_remember_session_pressed"]
