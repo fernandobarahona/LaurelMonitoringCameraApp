@@ -51,7 +51,7 @@ var _http_request_pool : Array = []
 var _offline: bool = false : set = _set_offline
 
 func _ready() -> void:
-	set_process(false)
+	pass
 
 func _process(delta : float) -> void:
 	for i in range(_http_request_pool.size() - 1, -1, -1):
@@ -68,7 +68,6 @@ func _process(delta : float) -> void:
 ## @args
 ## @return FunctionTask
 func execute(function: String, method: int, params: Dictionary = {}, body: Dictionary = {}) -> FunctionTask:
-	set_process(true)
 	var function_task : FunctionTask = FunctionTask.new()
 	function_task.task_error.connect(_on_task_error)
 	function_task.task_finished.connect(_on_task_finished)
@@ -85,6 +84,7 @@ func execute(function: String, method: int, params: Dictionary = {}, body: Dicti
 			url += key + "=" + params[key] + "&"
 
 	if not body.is_empty():
+		function_task._headers = PackedStringArray(["Content-Type: application/json"])
 		function_task._fields = JSON.stringify(body)
 
 	_pooled_request(function_task)
@@ -158,7 +158,7 @@ func _pooled_request(task : FunctionTask) -> void:
 		Firebase._print("Client connected as Anonymous")
 
 
-	task._headers = ["Content-Type: application/json", _AUTHORIZATION_HEADER + auth.idtoken]
+	task._headers = Array(task._headers) + [_AUTHORIZATION_HEADER + auth.idtoken]
 
 	var http_request : HTTPRequest
 	for request in _http_request_pool:
@@ -169,7 +169,6 @@ func _pooled_request(task : FunctionTask) -> void:
 	if not http_request:
 		http_request = HTTPRequest.new()
 		Utilities.fix_http_request(http_request)
-		http_request.accept_gzip = false
 		_http_request_pool.append(http_request)
 		add_child(http_request)
 		http_request.request_completed.connect(_on_pooled_request_completed.bind(http_request))

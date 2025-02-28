@@ -1,4 +1,4 @@
-## @meta-authors SIsilicon, Kyle 'backat50ft' Szklenski
+## @meta-authors SIsilicon
 ## @meta-version 2.2
 ## An object that keeps track of an operation performed by [StorageReference].
 @tool
@@ -20,16 +20,15 @@ enum Task {
 ## Emitted when the task is finished. Returns data depending checked the success and action of the task.
 signal task_finished(data)
 
-## Boolean to determine if this request involves metadata only
-var is_meta : bool
+## @type StorageReference
+## The [StorageReference] that created this [StorageTask].
+var ref # Storage RefCounted (Can't static type due to cyclic reference)
 
 ## @enum Task
 ## @default -1
 ## @setter set_action
 ## The kind of operation this [StorageTask] is keeping track of.
 var action : int = -1 : set = set_action
-
-var ref # Should not be needed, damnit
 
 ## @default PackedByteArray()
 ## Data that the tracked task will/has returned.

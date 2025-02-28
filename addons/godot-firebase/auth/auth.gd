@@ -48,7 +48,6 @@ var auth : Dictionary = {}
 var _needs_refresh : bool = false
 var is_busy : bool = false
 var has_child : bool = false
-var is_oauth_login: bool = false
 
 
 var tcp_server : TCPServer = TCPServer.new()
@@ -137,13 +136,6 @@ var _update_profile_body : Dictionary = {
 	"displayName":"",
 	"photoUrl":"",
 	"deleteAttribute":"",
-	"returnSecureToken":true
-}
-
-var link_account_body : Dictionary = {
-	"idToken":"",
-	"email":"",
-	"password":"",
 	"returnSecureToken":true
 }
 
@@ -298,6 +290,7 @@ func get_auth_with_redirect(provider: AuthProvider) -> void:
 	else:
 		set_local_provider(provider)
 		OS.shell_open(url_endpoint)
+		print(url_endpoint)
 
 
 # Login with Google oAuth2.
@@ -305,8 +298,8 @@ func get_auth_with_redirect(provider: AuthProvider) -> void:
 # @provider_id and @request_uri can be changed
 func login_with_oauth(_token: String, provider: AuthProvider) -> void:
 	if _token:
-		is_oauth_login = true
 		var token : String = _token.uri_decode()
+		print(token)
 		var is_successful: bool = true
 		if provider.should_exchange:
 			exchange_token(token, _local_uri, provider.access_token_uri, provider.get_client_id(), provider.get_client_secret())
@@ -433,6 +426,7 @@ func _on_FirebaseAuth_request_completed(result : int, response_code : int, heade
 			return
 
 		res = json
+
 	if response_code == HTTPClient.RESPONSE_OK:
 		if not res.has("kind"):
 			auth = get_clean_keys(res)
@@ -445,7 +439,7 @@ func _on_FirebaseAuth_request_completed(result : int, response_code : int, heade
 
 			if _needs_refresh:
 				_needs_refresh = false
-				if not is_oauth_login: login_succeeded.emit(auth)
+				login_succeeded.emit(auth)
 		else:
 			match res.kind:
 				RESPONSE_SIGNUP:
@@ -472,8 +466,6 @@ func _on_FirebaseAuth_request_completed(result : int, response_code : int, heade
 			auth_request.emit(res.error.code, res.error.message)
 	requesting = Requests.NONE
 	auth_request_type = Auth_Type.NONE
-	is_oauth_login = false
-
 
 
 # Function used to save the auth data provided by Firebase into an encrypted file
@@ -519,7 +511,7 @@ func check_auth_file() -> bool:
 		# Will ensure "auth_request" emitted
 		return load_auth()
 	else:
-		Firebase._printerr("Encrypted Firebase Auth file does not exist")
+		#Firebase._printerr("Encrypted Firebase Auth file does not exist")
 		auth_request.emit(ERR_DOES_NOT_EXIST, "Encrypted Firebase Auth file does not exist")
 		return false
 
@@ -558,18 +550,6 @@ func update_account(idToken : String, displayName : String, photoUrl : String, d
 		_update_profile_body.deleteAttribute = deleteAttribute
 		_update_profile_body.returnSecureToken = returnSecureToken
 		var err = request(_base_url + _update_account_request_url, _headers, HTTPClient.METHOD_POST, JSON.stringify(_update_profile_body))
-		if err != OK:
-			is_busy = false
-			Firebase._printerr("Error updating account: %s" % err)
-
-# Link account with Email and Password
-func link_account(email : String, password : String) -> void:
-	if _is_ready():
-		is_busy = true
-		link_account_body.idToken = auth.idtoken
-		link_account_body.email = email
-		link_account_body.password = password
-		var err = request(_base_url + _update_account_request_url, _headers, HTTPClient.METHOD_POST, JSON.stringify(link_account_body))
 		if err != OK:
 			is_busy = false
 			Firebase._printerr("Error updating account: %s" % err)
@@ -621,8 +601,6 @@ func delete_user_account() -> void:
 		if err != OK:
 			is_busy = false
 			Firebase._printerr("Error deleting user: %s" % err)
-		else:
-			remove_auth()
 
 
 # Function is called when a new token is issued to a user. The function will yield until the token has expired, and then request a new one.
